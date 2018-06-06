@@ -1,0 +1,8 @@
+.vscode
+.ipynb_checkpoints
+.cache
+log*
+twitter_scraping
+node_modules
+geckodriver.log
+*.json
