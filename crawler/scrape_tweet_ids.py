@@ -2,12 +2,20 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException
 from time import sleep, time
 from concurrent.futures import ProcessPoolExecutor, as_completed, ThreadPoolExecutor
 import json
 import datetime
 import logging
+import sys
+
+
+def is_python_3_5():
+    return (sys.version_info.major is 3) and (sys.version_info.minor is 5)
+
+def is_python_3_6():
+    return (sys.version_info.major is 3) and (sys.version_info.minor is 6)
 
 
 format_ts = lambda dt: dt.strftime('%Y-%m-%d')
@@ -20,6 +28,9 @@ def get_firefox_driver():
     return webdriver.Firefox(
         firefox_binary='/usr/bin/firefox-developer-edition'
     )
+    # return webdriver.Chrome(
+    #     executable_path='/usr/lib/chromium-browser/chromedriver'
+    # )
 
 
 def new_tweet_from_selenium_div(div):
@@ -68,7 +79,10 @@ class TweetScraper(object):
         filename = '{}-stats.json'.format(self.screen_name)
         try:
             with open(filename) as f:
-                content = f.read().trim()
+                if is_python_3_5:
+                    content = f.read().trim()
+                else:
+                    content = f.read().strip()
             stats = json.loads(content)
         except (json.JSONDecodeError, FileNotFoundError):
             stats = {}
@@ -99,7 +113,8 @@ class TweetScraper(object):
         # timer = time()
         # elapsed = lambda : '{} {} ::'.format(self.screen_name, int(time()-timer))
         date_so_far = self.start_date
-        temp_filename = f'.{self.screen_name}-{int(time())}.cache.json'
+        # temp_filename = f'.{self.screen_name}-{int(time())}.cache.json'
+        temp_filename = '.{}-{}.cache.json'.format(self.screen_name, int(time()))
         for begin, end in self.get_date_range():
             if n_tweet_cap and len(self.tweets) > n_tweet_cap:
                 break
@@ -108,7 +123,15 @@ class TweetScraper(object):
             url = self.get_search_url(begin, end)
             # print(begin, 'to', end, 'looking up at', url)
             logging.info(':: %s :: Looking up at %s', self.screen_name, url)
-            self.driver.get(url)
+
+            trying = 5
+            while trying:
+                try:
+                    self.driver.get(url)
+                    trying = 0
+                except TimeoutException:
+                    trying -= 1
+                    pass
             sleep(self._wait_time)
 
             try:
