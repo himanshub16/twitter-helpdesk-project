@@ -6,3 +6,5 @@ twitter_scraping
 node_modules
 geckodriver.log
 *.json
+dump
+*.log
