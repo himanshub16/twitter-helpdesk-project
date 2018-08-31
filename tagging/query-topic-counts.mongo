@@ -1,0 +1,2 @@
+db.conversations.aggregate([{$match: {topics: {$ne: []}}}, {$project: {conversation_id: 1, n_topics: {$size: "$topics"}}}, {$sort: {n_topics: -1}}]).toArray()
+

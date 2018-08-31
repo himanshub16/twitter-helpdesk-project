@@ -1,0 +1,29 @@
+Direct
+------
+tweet length
+source
+n_hashtags
+n_mentions
+per_hashtags
+per_mentions
+user.protected
+user.followers_count
+user.friends_count
+user.favorites_count
+user.verified
+user.statuses_count
+user.created_at
+retweet_count
+favorite_count
+possibly_sensitive
+created_at_hour
+responded_at_hour
+
+
+Derived
+-------
+sentiment of text
+# of numbers in text
+in/outside business hours posted
+time slice of day
+words of profanity

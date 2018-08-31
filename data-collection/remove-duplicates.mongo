@@ -1,0 +1,12 @@
+db.tweets.aggregate([
+	{$group: {
+		_id: {'tweet_id': '$id_str'}, 
+		dups: {$addToSet: '$_id'}, 
+		count: {$sum: 1}
+	}},
+	{$match: {
+		count: {$gt: 1}
+	}}
+]).forEach(function(doc) { 
+	doc.dups.shift(); db.tweets.remove({_id: {$in: doc.dups}});
+})
