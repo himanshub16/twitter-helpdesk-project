@@ -9,3 +9,6 @@ geckodriver.log
 !package.json
 dump
 *.log
+__pycache__
+dist
+*.zip
