@@ -105,10 +105,10 @@ export default {
           this.conversation = response.data;
           this.currentUser = this.conversation.tweets[0].user;
           this.topics = this.conversation.topics;
-          this.topics.push(this.conversation.suggested_topic + ' (*) ')
+          // this.topics.push(this.conversation.suggested_topic + ' (*) ')
           // this.suggestedTopic = this.conversation.suggested_topic
 
-          console.log('fetched', response.data.length, 'tweets');
+          console.log('fetched', this.conversations.tweets.length, 'tweets');
         });
     },
 
