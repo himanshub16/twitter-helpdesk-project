@@ -15,7 +15,7 @@
         <router-link :to="{ name: 'ticket', params: { ticketId: conv._id.$oid } }">
           <v-list-tile-action>
             <v-avatar :size="30">
-              <img :src="conv.tweet.user.profile_image_url_https"
+              <img :src="conv.tweet.user.profile_image_url_http"
                    :alt="conv.tweet.user.screen_name[0]">
             </v-avatar>
           </v-list-tile-action>

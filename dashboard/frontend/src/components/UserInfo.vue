@@ -7,7 +7,7 @@
     <!-- avatar -->
     <v-flex>
       <v-avatar :size="100">
-        <img :src="user.profile_image_url_https" :alt="user.name">
+        <img :src="user.profile_image_url_http" :alt="user.name">
       </v-avatar>
     </v-flex>
     
