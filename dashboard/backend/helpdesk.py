@@ -4,12 +4,13 @@ from pymongo import MongoClient
 from bson import ObjectId
 import bson.json_util
 import json
+import os
 
 from learning import classify
 
 
 client = MongoClient()
-db = client['twitter-helpdesk']
+db = client[os.environ.get('DB_NAME', 'twitter-helpdesk')]
 
 app = Flask(__name__,
             static_folder="./dist/static",
